@@ -28,6 +28,29 @@ playerRightX, playerRightY = 20, 20
 playerRightWidth, playerRightHeight = 20, 100
 playerRightVelocity = 10
 
+
+def playerRightMove():
+    global playerRightY
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_w]:
+        playerRightY -= playerRightVelocity
+    if keys[pygame.K_s]:
+        playerRightY += playerRightVelocity
+
+
+def playerRightLockAtDisplay():
+    global playerRightY
+    if playerRightY < 0:
+        playerRightY = 0
+    elif playerRightY + playerRightHeight > HEIGHT:
+        playerRightY = HEIGHT - playerRightHeight
+
+
+def playerRightDraw(screen):
+    playerRightRect = pygame.rect.Rect((playerRightX, playerRightY), (playerRightWidth, playerRightHeight))
+    pygame.draw.rect(screen, whiteColor, playerRightRect)
+
+
 ball = Ball(WIDTH, HEIGHT)
 while True:
     events()
@@ -36,22 +59,12 @@ while True:
     ball.bounceRight()
     ball.bounceDown()
     ball.bounceLeft()
-
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_w]:
-        playerRightY -= playerRightVelocity
-    if keys[pygame.K_s]:
-        playerRightY += playerRightVelocity
-
-    if playerRightY < 0:
-        playerRightY = 0
-    elif playerRightY + playerRightHeight > HEIGHT:
-        playerRightY = HEIGHT - playerRightHeight
-
-        # Rect((left, top), (width, height)) -> Rect
-    playerRightRect = pygame.rect.Rect((playerRightX, playerRightY), (playerRightWidth, playerRightHeight))
-    pygame.draw.rect(SCREEN, whiteColor, playerRightRect)
     ball.move()
+
+    playerRightMove()
+    playerRightLockAtDisplay()
+    playerRightDraw(SCREEN)
+
     ball.draw(SCREEN)
 
     updateDisplay()
