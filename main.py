@@ -48,12 +48,24 @@ def ballBounceRight():
     if ballX + ballRedis > WIDTH:
         ballVelocityX = - ballVelocityX
 
+def ballBounceDown():
+    global ballVelocityY
+    if ballY + ballRedis > HEIGHT:
+        ballVelocityY = - ballVelocityY
+
+def ballBounceLeft():
+    global ballVelocityX
+    if ballX < 0:
+        ballVelocityX = -ballVelocityX
+
 
 while True:
     events()
 
     ballBounceUp()
     ballBounceRight()
+    ballBounceDown()
+    ballBounceLeft()
 
     ballMove()
     ballDraw()
