@@ -24,20 +24,29 @@ def events():
             sys.exit(0)
 
 
-def main():
-    ball = Ball(WIDTH, HEIGHT)
-    while True:
-        events()
+playerRightX, playerRightY = 20, 20
+playerRightWidth, playerRightHeight = 20, 100
+playerRightVelocity = 10
 
-        ball.bounceUp()
-        ball.bounceRight()
-        ball.bounceDown()
-        ball.bounceLeft()
+ball = Ball(WIDTH, HEIGHT)
+while True:
+    events()
 
-        ball.move()
-        ball.draw(SCREEN)
+    ball.bounceUp()
+    ball.bounceRight()
+    ball.bounceDown()
+    ball.bounceLeft()
 
-        updateDisplay()
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_w]:
+        playerRightY -= playerRightVelocity
+    if keys[pygame.K_s]:
+        playerRightY += playerRightVelocity
 
+    # Rect((left, top), (width, height)) -> Rect
+    playerRightRect = pygame.rect.Rect((playerRightX, playerRightY), (playerRightWidth, playerRightHeight))
+    pygame.draw.rect(SCREEN, whiteColor, playerRightRect)
+    ball.move()
+    ball.draw(SCREEN)
 
-main()
+    updateDisplay()
