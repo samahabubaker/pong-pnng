@@ -37,11 +37,16 @@ def events():
             sys.exit(0)
 
 
+def ballBounceUp():
+    global ballVelocityY
+    if ballY < 0:
+        ballVelocityY = -ballVelocityY
+
+
 while True:
     events()
 
-    if ballY < 0:
-        ballVelocityY = -ballVelocityY
+    ballBounceUp()
     ballMove()
     ballDraw()
     updateDisplay()
