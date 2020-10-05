@@ -43,12 +43,19 @@ def ballBounceUp():
         ballVelocityY = -ballVelocityY
 
 
+def ballBounceRight():
+    global ballVelocityX
+    if ballX + ballRedis > WIDTH:
+        ballVelocityX = - ballVelocityX
+
+
 while True:
     events()
 
     ballBounceUp()
-    if ballX + ballRedis > WIDTH:
-        ballVelocityX = - ballVelocityX
+    ballBounceRight()
+
     ballMove()
     ballDraw()
+
     updateDisplay()
