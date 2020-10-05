@@ -47,6 +47,8 @@ while True:
     events()
 
     ballBounceUp()
+    if ballX + ballRedis > WIDTH:
+        ballVelocityX = - ballVelocityX
     ballMove()
     ballDraw()
     updateDisplay()
