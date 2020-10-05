@@ -55,16 +55,21 @@ class Ball:
         pygame.draw.circle(screen, color, (self.x, self.y), self.Redis)
 
 
-ball = Ball()
-while True:
-    events()
+def main():
+    ball = Ball()
+    while True:
+        events()
 
-    ball.bounceUp()
-    ball.bounceRight()
-    ball.bounceDown()
-    ball.bounceLeft()
+        ball.bounceUp()
+        ball.bounceRight()
+        ball.bounceDown()
+        ball.bounceLeft()
 
-    ball.move()
-    ball.draw()
+        ball.move()
+        ball.draw()
 
-    updateDisplay()
+        updateDisplay()
+
+
+if __name__ == '__main__':
+    main()
