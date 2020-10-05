@@ -43,7 +43,12 @@ while True:
     if keys[pygame.K_s]:
         playerRightY += playerRightVelocity
 
-    # Rect((left, top), (width, height)) -> Rect
+    if playerRightY < 0:
+        playerRightY = 0
+    elif playerRightY + playerRightHeight > HEIGHT:
+        playerRightY = HEIGHT - playerRightHeight
+
+        # Rect((left, top), (width, height)) -> Rect
     playerRightRect = pygame.rect.Rect((playerRightX, playerRightY), (playerRightWidth, playerRightHeight))
     pygame.draw.rect(SCREEN, whiteColor, playerRightRect)
     ball.move()
