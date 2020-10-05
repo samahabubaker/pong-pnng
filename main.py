@@ -8,20 +8,6 @@ CLOCK = pygame.time.Clock()
 FPS = 30
 blackColor = (0, 0, 0)
 whiteColor = (255, 255, 255)
-ballVelocity = 5
-ballX, ballY = WIDTH // 2, HEIGHT // 2
-ballVelocityX, ballVelocityY = ballVelocity, -ballVelocity
-ballRedis = 5
-
-
-def ballMove():
-    global ballX, ballY
-    ballX += ballVelocityX
-    ballY += ballVelocityY
-
-
-def ballDraw():
-    pygame.draw.circle(SCREEN, whiteColor, (ballX, ballY), ballRedis)
 
 
 def updateDisplay():
@@ -37,37 +23,48 @@ def events():
             sys.exit(0)
 
 
-def ballBounceUp():
-    global ballVelocityY
-    if ballY < 0:
-        ballVelocityY = -ballVelocityY
+class Ball:
+    def __init__(self):
+        self.Velocity = 5
+        self.x, self.y = WIDTH // 2, HEIGHT // 2
+        self.velocityX, self.velocityY = self.Velocity, -self.Velocity
+        self.Redis = 5
+
+    def bounceUp(self):
+        if self.y < 0:
+            self.velocityY = -self.velocityY
+
+    def bounceRight(self):
+        if self.x + self.Redis > WIDTH:
+            self.velocityX = - self.velocityX
+
+    def bounceDown(self):
+
+        if self.y + self.Redis > HEIGHT:
+            self.velocityY = - self.velocityY
+
+    def bounceLeft(self):
+        if self.x < 0:
+            self.velocityX = -self.velocityX
+
+    def move(self):
+        self.x += self.velocityX
+        self.y += self.velocityY
+
+    def draw(self, screen=SCREEN, color=whiteColor):
+        pygame.draw.circle(screen, color, (self.x, self.y), self.Redis)
 
 
-def ballBounceRight():
-    global ballVelocityX
-    if ballX + ballRedis > WIDTH:
-        ballVelocityX = - ballVelocityX
-
-def ballBounceDown():
-    global ballVelocityY
-    if ballY + ballRedis > HEIGHT:
-        ballVelocityY = - ballVelocityY
-
-def ballBounceLeft():
-    global ballVelocityX
-    if ballX < 0:
-        ballVelocityX = -ballVelocityX
-
-
+ball = Ball()
 while True:
     events()
 
-    ballBounceUp()
-    ballBounceRight()
-    ballBounceDown()
-    ballBounceLeft()
+    ball.bounceUp()
+    ball.bounceRight()
+    ball.bounceDown()
+    ball.bounceLeft()
 
-    ballMove()
-    ballDraw()
+    ball.move()
+    ball.draw()
 
     updateDisplay()
