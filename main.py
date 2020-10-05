@@ -8,7 +8,9 @@ CLOCK = pygame.time.Clock()
 FPS = 30
 blackColor = (0, 0, 0)
 whiteColor = (255, 255, 255)
-ballX, ballY = HEIGHT // 2, WIDTH // 2
+ballV = 5
+ballX, ballY = WIDTH // 2, HEIGHT // 2
+ballVx, ballVy = ballV, -ballV
 ballRedis = 5
 while True:
     for event in pygame.event.get():
@@ -16,6 +18,8 @@ while True:
             pygame.quit()
             sys.exit(0)
 
+    ballX += ballVx
+    ballY += ballVy
     pygame.draw.circle(SCREEN, whiteColor, (ballX, ballY), ballRedis)
     CLOCK.tick(FPS)
     pygame.display.flip()
