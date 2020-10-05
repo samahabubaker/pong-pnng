@@ -40,6 +40,8 @@ def events():
 while True:
     events()
 
+    if ballY < 0:
+        ballVy = -ballVy
     ballMove()
     ballDraw()
     updateDisplay()
