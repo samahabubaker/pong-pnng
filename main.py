@@ -12,15 +12,34 @@ ballV = 5
 ballX, ballY = WIDTH // 2, HEIGHT // 2
 ballVx, ballVy = ballV, -ballV
 ballRedis = 5
-while True:
+
+
+def ballMove():
+    global ballX, ballY
+    ballX += ballVx
+    ballY += ballVy
+
+
+def ballDraw():
+    pygame.draw.circle(SCREEN, whiteColor, (ballX, ballY), ballRedis)
+
+
+def updateDisplay():
+    CLOCK.tick(FPS)
+    pygame.display.flip()
+    SCREEN.fill(blackColor)
+
+
+def events():
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit(0)
 
-    ballX += ballVx
-    ballY += ballVy
-    pygame.draw.circle(SCREEN, whiteColor, (ballX, ballY), ballRedis)
-    CLOCK.tick(FPS)
-    pygame.display.flip()
-    SCREEN.fill(blackColor)
+
+while True:
+    events()
+
+    ballMove()
+    ballDraw()
+    updateDisplay()
