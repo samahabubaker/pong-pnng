@@ -8,16 +8,16 @@ CLOCK = pygame.time.Clock()
 FPS = 30
 blackColor = (0, 0, 0)
 whiteColor = (255, 255, 255)
-ballV = 5
+ballVelocity = 5
 ballX, ballY = WIDTH // 2, HEIGHT // 2
-ballVx, ballVy = ballV, -ballV
+ballVelocityX, ballVelocityY = ballVelocity, -ballVelocity
 ballRedis = 5
 
 
 def ballMove():
     global ballX, ballY
-    ballX += ballVx
-    ballY += ballVy
+    ballX += ballVelocityX
+    ballY += ballVelocityY
 
 
 def ballDraw():
@@ -41,7 +41,7 @@ while True:
     events()
 
     if ballY < 0:
-        ballVy = -ballVy
+        ballVelocityY = -ballVelocityY
     ballMove()
     ballDraw()
     updateDisplay()
