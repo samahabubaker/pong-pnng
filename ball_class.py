@@ -1,12 +1,15 @@
+from math import sin, cos, pi
+
 import pygame
 
 
 class Ball:
     def __init__(self, WIDTH, HEIGHT):
         self.displayWidth, self.displayHeight = WIDTH, HEIGHT
-        self.Velocity = 5
+        self.Velocity = 20
         self.x, self.y = WIDTH // 2, HEIGHT // 2
-        self.velocityX, self.velocityY = self.Velocity, -self.Velocity
+        angle = (270 + 270) * pi / 180
+        self.velocityX, self.velocityY = int(cos(angle) * self.Velocity), int(sin(angle) * self.Velocity)
         self.Redis = 5
         self.color = (255, 255, 255)
 

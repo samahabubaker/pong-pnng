@@ -1,3 +1,5 @@
+import math
+
 import pygame, sys
 
 from ball_class import Ball
@@ -24,9 +26,9 @@ def events():
             sys.exit(0)
 
 
-playerRightX, playerRightY = 20, 20
 playerRightWidth, playerRightHeight = 20, 100
-playerRightVelocity = 10
+playerRightX, playerRightY = 20, (HEIGHT // 2) - (playerRightHeight // 2)
+playerRightVelocity = 20
 
 
 def playerRightMove():
@@ -60,6 +62,16 @@ while True:
     ball.bounceDown()
     ball.bounceLeft()
     ball.move()
+    if ball.y in range(playerRightY, playerRightY + playerRightHeight):
+        if ball.x < playerRightX + playerRightWidth:
+            relativeBallY = ball.y - playerRightY
+            collisionPlace = relativeBallY / playerRightHeight * 100
+            angle = 180 * collisionPlace / 100
+            pygameAngle = (angle + 270)
+            pygameAngleRadian = pygameAngle * math.pi / 180
+            vectorX, vectorY = math.cos(pygameAngleRadian), math.sin(pygameAngleRadian)
+            ball.velocityX = int(vectorX * ball.Velocity)
+            ball.velocityY = int(vectorY * ball.Velocity)
 
     playerRightMove()
     playerRightLockAtDisplay()
