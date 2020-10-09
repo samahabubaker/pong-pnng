@@ -8,7 +8,7 @@ from player_right import PlayerRight
 class Ball:
     def __init__(self, WIDTH, HEIGHT, startAngle=0):
         self.displayWidth, self.displayHeight = WIDTH, HEIGHT
-        self.maxVelocity = 40
+        self.maxVelocity = 30
         self.position = pygame.math.Vector2(WIDTH // 2, HEIGHT // 2)
         angle = startAngle * pi / 180
         self.velocity = pygame.math.Vector2(int(cos(angle) * self.maxVelocity / 2),
