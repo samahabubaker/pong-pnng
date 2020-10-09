@@ -2,37 +2,78 @@ from math import sin, cos, pi
 
 import pygame
 
+from player_right import PlayerRight
+
 
 class Ball:
-    def __init__(self, WIDTH, HEIGHT):
+    def __init__(self, WIDTH, HEIGHT, startAngle=0):
         self.displayWidth, self.displayHeight = WIDTH, HEIGHT
-        self.Velocity = 20
-        self.x, self.y = WIDTH // 2, HEIGHT // 2
-        angle = (270 + 270) * pi / 180
-        self.velocityX, self.velocityY = int(cos(angle) * self.Velocity), int(sin(angle) * self.Velocity)
-        self.Redis = 5
+        self.maxVelocity = 40
+        self.position = pygame.math.Vector2(WIDTH // 2, HEIGHT // 2)
+        angle = startAngle * pi / 180
+        self.velocity = pygame.math.Vector2(int(cos(angle) * self.maxVelocity / 2),
+                                            int(sin(angle) * self.maxVelocity / 2))
+        self.radius = 5
         self.color = (255, 255, 255)
 
     def bounceUp(self):
-        if self.y < 0:
-            self.velocityY = -self.velocityY
+        if self.position.y < 0:
+            self.velocity.y = -self.velocity.y
 
-    def bounceRight(self):
-        if self.x + self.Redis > self.displayWidth:
-            self.velocityX = - self.velocityX
+    def isBouncedRight(self):
+        if self.position.x + self.radius > self.displayWidth:
+            return True
+        return False
 
     def bounceDown(self):
 
-        if self.y + self.Redis > self.displayHeight:
-            self.velocityY = - self.velocityY
+        if self.position.y + self.radius > self.displayHeight:
+            self.velocity.y = - self.velocity.y
 
-    def bounceLeft(self):
-        if self.x < 0:
-            self.velocityX = -self.velocityX
+    def isBouncedLeft(self):
+        if self.position.x < 0:
+            return True
+        return False
 
     def move(self):
-        self.x += self.velocityX
-        self.y += self.velocityY
+        self.position += self.velocity
 
     def draw(self, screen):
-        pygame.draw.circle(screen, self.color, (self.x, self.y), self.Redis)
+        pygame.draw.circle(screen, self.color, tuple(map(int, self.position)), self.radius)
+
+    def update(self, player):
+        if type(player) is PlayerRight:
+            # print(f"{self.position.y=} {player.position.y=}")
+            if player.position.y < self.position.y < player.position.y + player.Height:
+                if self.position.x - self.radius < player.position.x + player.WIDTH:
+                    relativeBallY = self.position.y - player.position.y
+                    relativeCollisionPosition = relativeBallY / player.Height * 100
+                    projectedAngle = 180 * relativeCollisionPosition / 100
+                    pygameAngle = projectedAngle + 270
+                    # print(projectedAngle)
+                    pygameAngleRadian = pygameAngle * pi / 180
+                    bounceVector = pygame.math.Vector2(cos(pygameAngleRadian), sin(pygameAngleRadian))
+                    bouncePower = self._magnitudeOfBounce(projectedAngle)
+                    amountOfVelocity = bouncePower * self.maxVelocity / 100
+                    self.velocity = bounceVector * amountOfVelocity
+        else:
+            if player.position.y < self.position.y < player.position.y + player.Height:
+                if self.position.x + self.radius > player.position.x:
+                    relativeBallY = self.position.y - player.position.y
+                    relativeCollisionPosition = relativeBallY / player.Height * 100
+                    projectedAngle = abs((180 * relativeCollisionPosition / 100) - 180)
+                    pygameAngle = projectedAngle + 270
+                    print(projectedAngle)
+                    pygameAngleRadian = pygameAngle * pi / 180
+                    bounceVector = pygame.math.Vector2(cos(pygameAngleRadian), sin(pygameAngleRadian))
+                    bouncePower = self._magnitudeOfBounce(projectedAngle)
+                    amountOfVelocity = bouncePower * self.maxVelocity / 100
+                    self.velocity = -bounceVector * amountOfVelocity
+
+    def _magnitudeOfBounce(self, angle):
+        i = angle / 180 * 100
+        mid = 50
+        if i <= mid:
+            return 100 - i
+        if i > mid:
+            return i
